@@ -1,30 +1,29 @@
-############################################################################
-## Django ORM Standalone Python Template
-############################################################################
-""" Here we'll import the parts of Django we need. It's recommended to leave
-these settings as is, and skip to START OF APPLICATION section below """
+import logging
+from aiogram.utils.executor import start_webhook
 
-# Turn off bytecode generation
-import sys
-sys.dont_write_bytecode = True
+from settings import WEBHOOK_PATH, WEBHOOK_URL, WEBAPP_HOST, WEBAPP_PORT
+from bot.loader import dp, bot
 
-# Django specific settings
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'settings')
-import django
-django.setup()
+logging.basicConfig(level=logging.INFO)
 
-# Import your models for use in your script
-from db.models import *
 
-############################################################################
-## START OF APPLICATION
-############################################################################
-""" Replace the code below with your own """
+async def on_startup(dp):
+    await bot.set_webhook(WEBHOOK_URL)
+    # insert code here to run it after start
 
-# Seed a few users in the database
-User.objects.create(name='Dan')
-User.objects.create(name='Robert')
 
-for u in User.objects.all():
-    print(f'ID: {u.id} \tUsername: {u.name}')
+async def on_shutdown(dp):
+    # insert code here to run it before shutdown
+    pass
+
+
+if __name__ == "__main__":
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=WEBHOOK_PATH,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host=WEBAPP_HOST,
+        port=WEBAPP_PORT,
+    )

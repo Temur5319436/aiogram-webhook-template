@@ -23,7 +23,7 @@ DATABASES = {
     }
 }
 
-INSTALLED_APPS = "db"
+INSTALLED_APPS = ("db",)
 
 BOT_TOKEN = env.str("BOT_TOKEN")
 

@@ -15,3 +15,4 @@ dp = Dispatcher(bot=bot, storage=storage)
 
 class MainState(StatesGroup):
     phone_number = State()
+    gender = State()
